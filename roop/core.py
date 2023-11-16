@@ -205,7 +205,22 @@ def destroy() -> None:
     sys.exit()
 
 
-def run() -> None:
+# def run() -> None:
+#     parse_args()
+#     if not pre_check():
+#         return
+#     for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
+#         if not frame_processor.pre_check():
+#             return
+#     limit_resources()
+#     if roop.globals.headless:
+#         start()
+#     else:
+#         window = ui.init(start, destroy)
+#         window.mainloop()
+        
+        
+def run_cli() -> None:
     parse_args()
     if not pre_check():
         return
@@ -213,8 +228,16 @@ def run() -> None:
         if not frame_processor.pre_check():
             return
     limit_resources()
-    if roop.globals.headless:
-        start()
-    else:
-        window = ui.init(start, destroy)
-        window.mainloop()
+    start()
+    
+
+def run_gui() -> None:
+    parse_args()
+    if not pre_check():
+        return
+    for frame_processor in get_frame_processors_modules(roop.globals.frame_processors):
+        if not frame_processor.pre_check():
+            return
+    limit_resources()
+    window = ui.init(start, destroy)
+    window.mainloop()

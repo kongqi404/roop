@@ -5,13 +5,16 @@ on: [ push, pull_request ]
 jobs:
  lint:
   runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      python-version: ["3.10","3.11"]
   steps:
   - name: Checkout
-    uses: actions/checkout@v2
-  - name: Set up Python 3.9
-    uses: actions/setup-python@v2
+    uses: actions/checkout@v3
+  - name: Set up Python ${{ matrix.python-version }}
+    uses: actions/setup-python@v3
     with:
-     python-version: 3.9
+     python-version: ${{ matrix.python-version }}
   - run: pip install flake8
   - run: pip install mypy
   - run: flake8 run.py roop
@@ -20,22 +23,24 @@ jobs:
   strategy:
    matrix:
     os: [macos-latest, ubuntu-latest, windows-latest]
+    python-version: ["3.10","3.11"]
   runs-on: ${{ matrix.os }}
   steps:
   - name: Checkout
-    uses: actions/checkout@v2
+    uses: actions/checkout@v3
   - name: Set up ffmpeg
     uses: FedericoCarboni/setup-ffmpeg@v2
-  - name: Set up Python 3.9
-    uses: actions/setup-python@v2
+  - name: Set up Python ${{ matrix.python-version }}
+    uses: actions/setup-python@v3
     with:
-     python-version: 3.9
-  - run: pip install -r requirements-headless.txt
-  - run: python run.py -s .github/examples/source.jpg -t .github/examples/target.mp4 -o .github/examples/output.mp4
+     python-version: ${{ matrix.python-version }}
+  - run: pip install -e .
+  - run: roop-cli -s .github/examples/source.jpg -t .github/examples/target.mp4 -o .github/examples/output.mp4
     if: matrix.os != 'windows-latest'
-  - run: python run.py -s .github\examples\source.jpg -t .github\examples\target.mp4 -o .github\examples\output.mp4
+  - run: roop-cli -s .github\examples\source.jpg -t .github\examples\target.mp4 -o .github\examples\output.mp4
     if: matrix.os == 'windows-latest'
   - run: ffmpeg -i .github/examples/snapshot.mp4 -i .github/examples/output.mp4 -filter_complex psnr -f null -
     if: matrix.os != 'windows-latest'
   - run: ffmpeg -i .github\examples\snapshot.mp4 -i .github\examples\output.mp4 -filter_complex psnr -f null -
     if: matrix.os == 'windows-latest'
+
