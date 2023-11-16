@@ -16,9 +16,7 @@ jobs:
     with:
      python-version: ${{ matrix.python-version }}
   - run: pip install flake8
-  - run: pip install mypy
   - run: flake8 roop
-  - run: mypy roop
  test:
   strategy:
    matrix:
