@@ -11,7 +11,7 @@ dependencies = [
     "tk==0.1.0",
     "customtkinter==5.2.0",
     "tkinterdnd2==0.3.0",
-    "onnxruntime==1.15.0",
+    "onnxruntime-gpu==1.15.1",
     "pillow==10.0.0",
     "tensorflow==2.13.0",
     "opennsfw2==0.10.2",
