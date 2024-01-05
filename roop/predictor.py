@@ -11,3 +11,9 @@ def predict_image(target_path: str) -> bool:
 
 def predict_video(target_path: str) -> bool:
     return False
+
+
+def clear_predictor() -> None:
+    global PREDICTOR
+
+    PREDICTOR = None
